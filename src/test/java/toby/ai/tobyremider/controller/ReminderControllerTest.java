@@ -35,7 +35,7 @@ class ReminderControllerTest {
 
     @BeforeEach
     void setUp() {
-        savedReminder = reminderService.create(new ReminderRequest("우유 사기", "저지방 우유"));
+        savedReminder = reminderService.create(new ReminderRequest("우유 사기", "저지방 우유", null, null, null));
     }
 
     @Test
@@ -67,7 +67,7 @@ class ReminderControllerTest {
     @Test
     @DisplayName("POST /api/reminders — 새 리마인더를 생성한다")
     void create() throws Exception {
-        ReminderRequest request = new ReminderRequest("빵 사기", "식빵");
+        ReminderRequest request = new ReminderRequest("빵 사기", "식빵", null, null, null);
 
         mockMvc.perform(post("/api/reminders")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +81,7 @@ class ReminderControllerTest {
     @Test
     @DisplayName("PUT /api/reminders/{id} — 리마인더를 수정한다")
     void update() throws Exception {
-        ReminderRequest request = new ReminderRequest("빵 사기", "식빵");
+        ReminderRequest request = new ReminderRequest("빵 사기", "식빵", null, null, null);
 
         mockMvc.perform(put("/api/reminders/{id}", savedReminder.id())
                         .contentType(MediaType.APPLICATION_JSON)

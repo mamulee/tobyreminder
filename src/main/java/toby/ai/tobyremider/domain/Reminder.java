@@ -26,6 +26,13 @@ public class Reminder {
 
     private String memo;
 
+    private LocalDateTime dueDate;
+
+    @Enumerated(EnumType.STRING)
+    private Priority priority;
+
+    private boolean flagged;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "list_id")
     private ReminderList list;
@@ -42,16 +49,22 @@ public class Reminder {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Reminder(String title, String memo, ReminderList list) {
+    public Reminder(String title, String memo, LocalDateTime dueDate, Priority priority, boolean flagged, ReminderList list) {
         this.title = title;
         this.memo = memo;
+        this.dueDate = dueDate;
+        this.priority = priority != null ? priority : Priority.NONE;
+        this.flagged = flagged;
         this.list = list;
         this.completed = false;
     }
 
-    public void update(String title, String memo) {
+    public void update(String title, String memo, LocalDateTime dueDate, Priority priority, boolean flagged) {
         this.title = title;
         this.memo = memo;
+        this.dueDate = dueDate;
+        this.priority = priority != null ? priority : Priority.NONE;
+        this.flagged = flagged;
     }
 
     public void toggleComplete() {

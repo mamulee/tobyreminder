@@ -47,6 +47,9 @@ public class DefaultReminderService implements ReminderService {
         Reminder reminder = Reminder.builder()
                 .title(request.title())
                 .memo(request.memo())
+                .dueDate(request.dueDate())
+                .priority(request.priority())
+                .flagged(request.flagged() != null && request.flagged())
                 .build();
         return ReminderResponse.from(reminderRepository.save(reminder));
     }
@@ -59,6 +62,9 @@ public class DefaultReminderService implements ReminderService {
         Reminder reminder = Reminder.builder()
                 .title(request.title())
                 .memo(request.memo())
+                .dueDate(request.dueDate())
+                .priority(request.priority())
+                .flagged(request.flagged() != null && request.flagged())
                 .list(list)
                 .build();
         return ReminderResponse.from(reminderRepository.save(reminder));
@@ -68,7 +74,8 @@ public class DefaultReminderService implements ReminderService {
     @Transactional
     public ReminderResponse update(Long id, ReminderRequest request) {
         Reminder reminder = getById(id);
-        reminder.update(request.title(), request.memo());
+        reminder.update(request.title(), request.memo(), request.dueDate(), request.priority(),
+                request.flagged() != null && request.flagged());
         return ReminderResponse.from(reminder);
     }
 

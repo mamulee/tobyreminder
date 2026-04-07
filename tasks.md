@@ -92,33 +92,33 @@
 ## Phase 4: 리마인더 상세 속성
 
 ### Backend
-- [ ] `Priority` Enum 생성 (NONE, LOW, MEDIUM, HIGH)
-- [ ] `Reminder` Entity에 필드 추가
-  - [ ] `dueDate` (LocalDateTime, nullable)
-  - [ ] `priority` (Priority Enum)
-  - [ ] `flagged` (Boolean)
-  - [ ] `completedAt` (LocalDateTime, nullable)
-- [ ] DTO 업데이트
+- [x] `Priority` Enum 생성 (NONE, LOW, MEDIUM, HIGH)
+- [x] `Reminder` Entity에 필드 추가
+  - [x] `dueDate` (LocalDateTime, nullable)
+  - [x] `priority` (Priority Enum)
+  - [x] `flagged` (Boolean)
+  - [x] `completedAt` (LocalDateTime, nullable)
+- [x] DTO 업데이트
 
 ### Frontend — 목록 표시 강화
-- [ ] 마감일 표시 (제목 아래 작은 회색 텍스트)
-- [ ] 우선순위 표시 (체크박스 옆 느낌표 개수: ! / !! / !!!)
-- [ ] 플래그 표시 (행 우측 주황색 깃발 아이콘)
+- [x] 마감일 표시 (제목 아래 작은 회색 텍스트)
+- [x] 우선순위 표시 (체크박스 옆 느낌표 개수: ! / !! / !!!)
+- [x] 플래그 표시 (행 우측 주황색 깃발 아이콘)
 
 ### Frontend — 상세 편집 패널
-- [ ] 리마인더 클릭 시 우측 디테일 패널 열기
-- [ ] 제목 편집 (인라인)
-- [ ] 메모 편집 (textarea)
-- [ ] 마감일 토글 스위치 + 날짜/시간 피커
-- [ ] 우선순위 드롭다운 (없음/낮음/중간/높음)
-- [ ] 플래그 토글 스위치
-- [ ] Apple 스타일 폼: 그룹화된 라운드 카드 + 토글 스위치
+- [x] 리마인더 클릭 시 우측 디테일 패널 열기
+- [x] 제목 편집 (인라인)
+- [x] 메모 편집 (textarea)
+- [x] 마감일 토글 스위치 + 날짜/시간 피커
+- [x] 우선순위 드롭다운 (없음/낮음/중간/높음)
+- [x] 플래그 토글 스위치
+- [x] Apple 스타일 폼: 그룹화된 라운드 카드 + 토글 스위치
 
 ### 검증
-- [ ] 리마인더에 마감일 설정 → 목록에 날짜 표시 확인
-- [ ] 우선순위 HIGH 설정 → !!! 표시 확인
-- [ ] 플래그 ON → 깃발 아이콘 표시 확인
-- [ ] 상세 패널에서 수정 → 저장 반영 확인
+- [x] 리마인더에 마감일 설정 → 목록에 날짜 표시 확인
+- [x] 우선순위 HIGH 설정 → !!! 표시 확인
+- [x] 플래그 ON → 깃발 아이콘 표시 확인
+- [x] 상세 패널에서 수정 → 저장 반영 확인
 
 ---
 

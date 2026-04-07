@@ -12,10 +12,15 @@ async function request<T>(path: string, options?: RequestInit): Promise<T> {
   return res.json();
 }
 
+export type Priority = "NONE" | "LOW" | "MEDIUM" | "HIGH";
+
 export interface Reminder {
   id: number;
   title: string;
   memo: string | null;
+  dueDate: string | null;
+  priority: Priority;
+  flagged: boolean;
   completed: boolean;
   completedAt: string | null;
   listId: number | null;
@@ -50,7 +55,13 @@ export const reminderApi = {
       body: JSON.stringify(data),
     }),
 
-  update: (id: number, data: { title: string; memo?: string }) =>
+  update: (id: number, data: {
+    title: string;
+    memo?: string | null;
+    dueDate?: string | null;
+    priority?: Priority;
+    flagged?: boolean;
+  }) =>
     request<Reminder>(`/reminders/${id}`, {
       method: "PUT",
       body: JSON.stringify(data),

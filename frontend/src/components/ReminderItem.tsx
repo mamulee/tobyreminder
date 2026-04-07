@@ -7,17 +7,36 @@ interface ReminderItemProps {
   reminder: Reminder;
   onToggleComplete: (id: number) => void;
   onDelete: (id: number) => void;
+  onSelect: (reminder: Reminder) => void;
+}
+
+function priorityMarker(priority: string) {
+  if (priority === "LOW") return "!";
+  if (priority === "MEDIUM") return "!!";
+  if (priority === "HIGH") return "!!!";
+  return null;
+}
+
+function formatDueDate(dateStr: string) {
+  const date = new Date(dateStr);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  if (hours === 0 && minutes === 0) return `${month}/${day}`;
+  return `${month}/${day} ${hours}:${String(minutes).padStart(2, "0")}`;
 }
 
 export default function ReminderItem({
   reminder,
   onToggleComplete,
   onDelete,
+  onSelect,
 }: ReminderItemProps) {
   const [fadeOut, setFadeOut] = useState(false);
-  const [showMenu, setShowMenu] = useState(false);
 
-  const handleToggle = () => {
+  const handleToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
     setFadeOut(true);
     setTimeout(() => {
       onToggleComplete(reminder.id);
@@ -25,15 +44,14 @@ export default function ReminderItem({
     }, 300);
   };
 
+  const marker = priorityMarker(reminder.priority);
+
   return (
     <div
-      className={`group flex items-center gap-3 px-4 py-2 transition-opacity duration-300 ${
+      className={`group flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-50 transition-all duration-300 ${
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
-      onContextMenu={(e) => {
-        e.preventDefault();
-        setShowMenu(!showMenu);
-      }}
+      onClick={() => onSelect(reminder)}
     >
       {/* 원형 체크박스 */}
       <button
@@ -52,37 +70,44 @@ export default function ReminderItem({
         )}
       </button>
 
-      {/* 제목 */}
-      <span
-        className={`flex-1 text-sm ${
-          reminder.completed ? "line-through text-gray-400" : "text-gray-900"
-        }`}
-      >
-        {reminder.title}
-      </span>
+      {/* 우선순위 마커 */}
+      {marker && (
+        <span className="text-xs font-bold text-orange-500 flex-shrink-0">
+          {marker}
+        </span>
+      )}
+
+      {/* 제목 + 마감일 */}
+      <div className="flex-1 min-w-0">
+        <span
+          className={`text-sm block truncate ${
+            reminder.completed ? "line-through text-gray-400" : "text-gray-900"
+          }`}
+        >
+          {reminder.title}
+        </span>
+        {reminder.dueDate && (
+          <span className="text-xs text-gray-400 block">
+            {formatDueDate(reminder.dueDate)}
+          </span>
+        )}
+      </div>
+
+      {/* 플래그 */}
+      {reminder.flagged && (
+        <span className="text-orange-500 text-sm flex-shrink-0">🚩</span>
+      )}
 
       {/* 삭제 버튼 */}
       <button
-        onClick={() => onDelete(reminder.id)}
-        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-xs"
+        onClick={(e) => {
+          e.stopPropagation();
+          onDelete(reminder.id);
+        }}
+        className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-xs flex-shrink-0"
       >
         삭제
       </button>
-
-      {/* 컨텍스트 메뉴 */}
-      {showMenu && (
-        <div className="absolute right-4 bg-white rounded-lg shadow-lg border py-1 z-10">
-          <button
-            onClick={() => {
-              onDelete(reminder.id);
-              setShowMenu(false);
-            }}
-            className="px-4 py-2 text-sm text-red-500 hover:bg-gray-50 w-full text-left"
-          >
-            삭제
-          </button>
-        </div>
-      )}
     </div>
   );
 }
