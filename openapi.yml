@@ -1,0 +1,179 @@
+openapi: 3.1.0
+info:
+  title: Toby Reminder API
+  description: Apple Reminders 웹 클론 REST API
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+
+paths:
+  /api/lists:
+    get:
+      summary: 전체 리스트 조회
+      operationId: findAllLists
+      tags:
+        - ReminderList
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReminderListResponse"
+
+    post:
+      summary: 리스트 생성
+      operationId: createList
+      tags:
+        - ReminderList
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReminderListRequest"
+      responses:
+        "201":
+          description: 생성 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReminderListResponse"
+
+  /api/lists/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+        description: 리스트 ID
+
+    get:
+      summary: 리스트 단건 조회
+      operationId: findListById
+      tags:
+        - ReminderList
+      responses:
+        "200":
+          description: 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReminderListResponse"
+        "404":
+          description: 리스트를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    put:
+      summary: 리스트 수정
+      operationId: updateList
+      tags:
+        - ReminderList
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReminderListRequest"
+      responses:
+        "200":
+          description: 수정 성공
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReminderListResponse"
+        "404":
+          description: 리스트를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+    delete:
+      summary: 리스트 삭제
+      operationId: deleteList
+      tags:
+        - ReminderList
+      responses:
+        "204":
+          description: 삭제 성공
+        "404":
+          description: 리스트를 찾을 수 없음
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    ReminderListRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: 리스트 이름
+          example: 장보기
+        color:
+          type: string
+          description: 색상 코드 (#hex)
+          example: "#FF3B30"
+        icon:
+          type: string
+          description: 아이콘 식별자
+          example: cart
+
+    ReminderListResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 리스트 ID
+          example: 1
+        name:
+          type: string
+          description: 리스트 이름
+          example: 장보기
+        color:
+          type: string
+          description: 색상 코드 (#hex)
+          example: "#FF3B30"
+        icon:
+          type: string
+          description: 아이콘 식별자
+          example: cart
+        createdAt:
+          type: string
+          format: date-time
+          description: 생성일시
+        updatedAt:
+          type: string
+          format: date-time
+          description: 수정일시
+
+    ErrorResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: HTTP 상태 코드
+          example: 404
+        message:
+          type: string
+          description: 에러 메시지
+          example: "ReminderList not found: 999"
+        timestamp:
+          type: string
+          description: 에러 발생 시각
+          example: "2026-04-07T22:00:00"
