@@ -10,6 +10,7 @@ public record ReminderResponse(
         String memo,
         boolean completed,
         LocalDateTime completedAt,
+        Long listId,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -20,6 +21,7 @@ public record ReminderResponse(
                 entity.getMemo(),
                 entity.isCompleted(),
                 entity.getCompletedAt(),
+                entity.getList() != null ? entity.getList().getId() : null,
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

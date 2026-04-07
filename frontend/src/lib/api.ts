@@ -18,6 +18,16 @@ export interface Reminder {
   memo: string | null;
   completed: boolean;
   completedAt: string | null;
+  listId: number | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface ReminderListType {
+  id: number;
+  name: string;
+  color: string | null;
+  icon: string | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -25,10 +35,17 @@ export interface Reminder {
 export const reminderApi = {
   findAll: () => request<Reminder[]>("/reminders"),
 
-  findById: (id: number) => request<Reminder>(`/reminders/${id}`),
+  findByListId: (listId: number) =>
+    request<Reminder[]>(`/lists/${listId}/reminders`),
 
   create: (data: { title: string; memo?: string }) =>
     request<Reminder>("/reminders", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
+  createInList: (listId: number, data: { title: string; memo?: string }) =>
+    request<Reminder>(`/lists/${listId}/reminders`, {
       method: "POST",
       body: JSON.stringify(data),
     }),
@@ -44,4 +61,23 @@ export const reminderApi = {
 
   delete: (id: number) =>
     request<void>(`/reminders/${id}`, { method: "DELETE" }),
+};
+
+export const listApi = {
+  findAll: () => request<ReminderListType[]>("/lists"),
+
+  create: (data: { name: string; color?: string; icon?: string }) =>
+    request<ReminderListType>("/lists", {
+      method: "POST",
+      body: JSON.stringify(data),
+    }),
+
+  update: (id: number, data: { name: string; color?: string; icon?: string }) =>
+    request<ReminderListType>(`/lists/${id}`, {
+      method: "PUT",
+      body: JSON.stringify(data),
+    }),
+
+  delete: (id: number) =>
+    request<void>(`/lists/${id}`, { method: "DELETE" }),
 };

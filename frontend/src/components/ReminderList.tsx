@@ -4,7 +4,13 @@ import { useEffect, useState, useRef } from "react";
 import { reminderApi, type Reminder } from "@/lib/api";
 import ReminderItem from "./ReminderItem";
 
-export default function ReminderList() {
+interface ReminderListProps {
+  listId: number | null;
+  listName?: string;
+  listColor?: string;
+}
+
+export default function ReminderList({ listId, listName, listColor }: ReminderListProps) {
   const [reminders, setReminders] = useState<Reminder[]>([]);
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState("");
@@ -12,7 +18,9 @@ export default function ReminderList() {
 
   const loadReminders = async () => {
     try {
-      const data = await reminderApi.findAll();
+      const data = listId
+        ? await reminderApi.findByListId(listId)
+        : await reminderApi.findAll();
       setReminders(data);
     } catch {
       console.error("Failed to load reminders");
@@ -21,7 +29,7 @@ export default function ReminderList() {
 
   useEffect(() => {
     loadReminders();
-  }, []);
+  }, [listId]);
 
   useEffect(() => {
     if (isAdding && inputRef.current) {
@@ -32,7 +40,11 @@ export default function ReminderList() {
   const handleAdd = async () => {
     if (!newTitle.trim()) return;
     try {
-      await reminderApi.create({ title: newTitle.trim() });
+      if (listId) {
+        await reminderApi.createInList(listId, { title: newTitle.trim() });
+      } else {
+        await reminderApi.create({ title: newTitle.trim() });
+      }
       setNewTitle("");
       setIsAdding(false);
       loadReminders();
@@ -70,11 +82,15 @@ export default function ReminderList() {
   const incompleteReminders = reminders.filter((r) => !r.completed);
   const completedReminders = reminders.filter((r) => r.completed);
 
+  const title = listName ?? "리마인더";
+  const color = listColor ?? "#007AFF";
+
   return (
     <div className="flex-1 p-6 overflow-y-auto">
-      <h1 className="text-3xl font-bold text-blue-500 mb-4">리마인더</h1>
+      <h1 className="text-3xl font-bold mb-4" style={{ color }}>
+        {title}
+      </h1>
 
-      {/* 리마인더 목록 카드 */}
       <div className="bg-white rounded-xl shadow-sm">
         {incompleteReminders.map((reminder) => (
           <div key={reminder.id} className="border-b border-gray-100 last:border-0 relative">
@@ -86,7 +102,6 @@ export default function ReminderList() {
           </div>
         ))}
 
-        {/* 인라인 입력 */}
         {isAdding && (
           <div className="flex items-center gap-3 px-4 py-2 border-b border-gray-100">
             <div className="w-5 h-5 rounded-full border-2 border-gray-300 flex-shrink-0" />
@@ -104,15 +119,14 @@ export default function ReminderList() {
         )}
       </div>
 
-      {/* 추가 버튼 */}
       <button
         onClick={() => setIsAdding(true)}
-        className="mt-3 text-blue-500 text-sm font-medium hover:text-blue-600"
+        className="mt-3 text-sm font-medium hover:opacity-80"
+        style={{ color }}
       >
         + 새로운 미리 알림
       </button>
 
-      {/* 완료된 항목 */}
       {completedReminders.length > 0 && (
         <div className="mt-6">
           <h2 className="text-sm font-medium text-gray-500 mb-2 px-1">

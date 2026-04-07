@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import toby.ai.tobyremider.domain.Reminder;
+import toby.ai.tobyremider.domain.ReminderList;
 import toby.ai.tobyremider.dto.ReminderRequest;
 import toby.ai.tobyremider.dto.ReminderResponse;
+import toby.ai.tobyremider.repository.ReminderListRepository;
 import toby.ai.tobyremider.repository.ReminderRepository;
 import toby.ai.tobyremider.service.ports.inp.ReminderService;
 
@@ -18,6 +20,7 @@ import java.util.NoSuchElementException;
 public class DefaultReminderService implements ReminderService {
 
     private final ReminderRepository reminderRepository;
+    private final ReminderListRepository reminderListRepository;
 
     @Override
     public List<ReminderResponse> findAll() {
@@ -32,11 +35,31 @@ public class DefaultReminderService implements ReminderService {
     }
 
     @Override
+    public List<ReminderResponse> findByListId(Long listId) {
+        return reminderRepository.findByListId(listId).stream()
+                .map(ReminderResponse::from)
+                .toList();
+    }
+
+    @Override
     @Transactional
     public ReminderResponse create(ReminderRequest request) {
         Reminder reminder = Reminder.builder()
                 .title(request.title())
                 .memo(request.memo())
+                .build();
+        return ReminderResponse.from(reminderRepository.save(reminder));
+    }
+
+    @Override
+    @Transactional
+    public ReminderResponse createInList(Long listId, ReminderRequest request) {
+        ReminderList list = reminderListRepository.findById(listId)
+                .orElseThrow(() -> new NoSuchElementException("ReminderList not found: " + listId));
+        Reminder reminder = Reminder.builder()
+                .title(request.title())
+                .memo(request.memo())
+                .list(list)
                 .build();
         return ReminderResponse.from(reminderRepository.save(reminder));
     }

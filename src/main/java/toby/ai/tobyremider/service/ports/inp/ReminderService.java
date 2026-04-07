@@ -11,7 +11,11 @@ public interface ReminderService {
 
     ReminderResponse findById(Long id);
 
+    List<ReminderResponse> findByListId(Long listId);
+
     ReminderResponse create(ReminderRequest request);
+
+    ReminderResponse createInList(Long listId, ReminderRequest request);
 
     ReminderResponse update(Long id, ReminderRequest request);
 

@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import toby.ai.tobyremider.dto.ReminderListRequest;
 import toby.ai.tobyremider.dto.ReminderListResponse;
+import toby.ai.tobyremider.dto.ReminderRequest;
+import toby.ai.tobyremider.dto.ReminderResponse;
 import toby.ai.tobyremider.service.ports.inp.ReminderListService;
+import toby.ai.tobyremider.service.ports.inp.ReminderService;
 
 import java.util.List;
 
@@ -16,6 +19,7 @@ import java.util.List;
 public class ReminderListController {
 
     private final ReminderListService reminderListService;
+    private final ReminderService reminderService;
 
     @GetMapping
     public ResponseEntity<List<ReminderListResponse>> findAll() {
@@ -42,5 +46,16 @@ public class ReminderListController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         reminderListService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{listId}/reminders")
+    public ResponseEntity<List<ReminderResponse>> findReminders(@PathVariable Long listId) {
+        return ResponseEntity.ok(reminderService.findByListId(listId));
+    }
+
+    @PostMapping("/{listId}/reminders")
+    public ResponseEntity<ReminderResponse> createReminder(@PathVariable Long listId,
+                                                           @RequestBody ReminderRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(reminderService.createInList(listId, request));
     }
 }

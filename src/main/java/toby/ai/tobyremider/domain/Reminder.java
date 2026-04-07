@@ -26,6 +26,10 @@ public class Reminder {
 
     private String memo;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "list_id")
+    private ReminderList list;
+
     private boolean completed;
 
     private LocalDateTime completedAt;
@@ -38,9 +42,10 @@ public class Reminder {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Reminder(String title, String memo) {
+    public Reminder(String title, String memo, ReminderList list) {
         this.title = title;
         this.memo = memo;
+        this.list = list;
         this.completed = false;
     }
 

@@ -55,37 +55,37 @@
 ## Phase 3: 리스트 관리
 
 ### Backend
-- [ ] `ReminderList` Entity 생성 (id, name, color, icon, createdAt, updatedAt)
-- [ ] `Reminder` Entity에 `list` 연관관계 추가 (`@ManyToOne`)
-- [ ] `ReminderListRepository` 생성
-- [ ] `ReminderListDto` 생성
-- [ ] `ReminderListService` 생성
-- [ ] `ReminderListController` 생성
-  - [ ] `GET /api/lists` — 전체 리스트 조회 (각 리스트별 리마인더 개수 포함)
-  - [ ] `POST /api/lists` — 리스트 생성
-  - [ ] `PUT /api/lists/{id}` — 리스트 수정
-  - [ ] `DELETE /api/lists/{id}` — 리스트 삭제 (소속 리마인더 함께 삭제)
-- [ ] 리마인더 API 수정
-  - [ ] `GET /api/lists/{listId}/reminders` — 리스트별 리마인더 조회
-  - [ ] `POST /api/lists/{listId}/reminders` — 리스트에 리마인더 생성
+- [x] `ReminderList` Entity 생성 (id, name, color, icon, createdAt, updatedAt)
+- [x] `Reminder` Entity에 `list` 연관관계 추가 (`@ManyToOne`)
+- [x] `ReminderListRepository` 생성
+- [x] `ReminderListDto` 생성
+- [x] `ReminderListService` 생성
+- [x] `ReminderListController` 생성
+  - [x] `GET /api/lists` — 전체 리스트 조회 (각 리스트별 리마인더 개수 포함)
+  - [x] `POST /api/lists` — 리스트 생성
+  - [x] `PUT /api/lists/{id}` — 리스트 수정
+  - [x] `DELETE /api/lists/{id}` — 리스트 삭제 (소속 리마인더 함께 삭제)
+- [x] 리마인더 API 수정
+  - [x] `GET /api/lists/{listId}/reminders` — 리스트별 리마인더 조회
+  - [x] `POST /api/lists/{listId}/reminders` — 리스트에 리마인더 생성
 
 ### Frontend
-- [ ] 사이드바 "나의 목록" 섹션
-  - [ ] 리스트 항목 표시 (색상 원형 아이콘 + 이름 + 리마인더 개수)
-  - [ ] 리스트 클릭 시 선택 상태 하이라이트
-- [ ] "+ 목록 추가" 버튼
-- [ ] 리스트 생성/편집 모달
-  - [ ] 리스트 이름 입력
-  - [ ] 색상 팔레트 (12색 원형 버튼)
-  - [ ] 아이콘 선택 그리드
-- [ ] 리스트 삭제 (컨텍스트 메뉴)
-- [ ] 메인 영역 상단: 리스트 제목 (리스트 색상, 굵은 대형 텍스트)
-- [ ] 리스트 선택 시 해당 리마인더만 필터링 표시
+- [x] 사이드바 "나의 목록" 섹션
+  - [x] 리스트 항목 표시 (색상 원형 아이콘 + 이름 + 리마인더 개수)
+  - [x] 리스트 클릭 시 선택 상태 하이라이트
+- [x] "+ 목록 추가" 버튼
+- [x] 리스트 생성/편집 모달
+  - [x] 리스트 이름 입력
+  - [x] 색상 팔레트 (12색 원형 버튼)
+  - [x] 아이콘 선택 그리드
+- [x] 리스트 삭제 (컨텍스트 메뉴)
+- [x] 메인 영역 상단: 리스트 제목 (리스트 색상, 굵은 대형 텍스트)
+- [x] 리스트 선택 시 해당 리마인더만 필터링 표시
 
 ### 검증
-- [ ] 리스트 생성 → 색상/아이콘 설정 확인
-- [ ] 리스트에 리마인더 추가 → 리스트 전환 시 필터링 확인
-- [ ] 리스트 삭제 → 소속 리마인더 함께 삭제 확인
+- [x] 리스트 생성 → 색상/아이콘 설정 확인
+- [x] 리스트에 리마인더 추가 → 리스트 전환 시 필터링 확인
+- [x] 리스트 삭제 → 소속 리마인더 함께 삭제 확인
 
 ---
 
