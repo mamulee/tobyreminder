@@ -26,8 +26,11 @@ export default function ListModal({ list, onSave, onClose }: ListModalProps) {
     }
   }, [list]);
 
+  const [submitted, setSubmitted] = useState(false);
+
   const handleSubmit = () => {
-    if (!name.trim()) return;
+    if (!name.trim() || submitted) return;
+    setSubmitted(true);
     onSave({ name: name.trim(), color, icon: "" });
   };
 

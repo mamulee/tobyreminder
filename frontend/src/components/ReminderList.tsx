@@ -44,8 +44,11 @@ export default function ReminderList({ listId, listName, listColor }: ReminderLi
     }
   }, [isAdding]);
 
+  const isSubmitting = useRef(false);
+
   const handleAdd = async () => {
-    if (!newTitle.trim()) return;
+    if (!newTitle.trim() || isSubmitting.current) return;
+    isSubmitting.current = true;
     try {
       if (listId) {
         await reminderApi.createInList(listId, { title: newTitle.trim() });
@@ -57,6 +60,8 @@ export default function ReminderList({ listId, listName, listColor }: ReminderLi
       loadReminders();
     } catch {
       console.error("Failed to create reminder");
+    } finally {
+      isSubmitting.current = false;
     }
   };
 
