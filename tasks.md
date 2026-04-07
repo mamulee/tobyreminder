@@ -3,23 +3,23 @@
 ## Phase 1: Backend 기본 구조 + 리마인더 CRUD API
 
 ### Backend
-- [ ] `Reminder` Entity 생성 (id, title, memo, completed, createdAt, updatedAt)
-- [ ] `ReminderRepository` 생성 (JpaRepository 상속)
-- [ ] `ReminderDto` 생성 (요청/응답 DTO)
-- [ ] `ReminderService` 생성 (CRUD 비즈니스 로직)
-- [ ] `ReminderController` 생성
-  - [ ] `GET /api/reminders` — 전체 조회
-  - [ ] `POST /api/reminders` — 생성
-  - [ ] `PUT /api/reminders/{id}` — 수정
-  - [ ] `PATCH /api/reminders/{id}/complete` — 완료 토글
-  - [ ] `DELETE /api/reminders/{id}` — 삭제
-- [ ] `WebConfig` CORS 설정 (localhost:3000 허용)
-- [ ] 글로벌 예외 처리 (`@RestControllerAdvice`)
+- [x] `Reminder` Entity 생성 (id, title, memo, completed, createdAt, updatedAt)
+- [x] `ReminderRepository` 생성 (JpaRepository 상속)
+- [x] `ReminderDto` 생성 (요청/응답 DTO)
+- [x] `ReminderService` 생성 (CRUD 비즈니스 로직)
+- [x] `ReminderController` 생성
+  - [x] `GET /api/reminders` — 전체 조회
+  - [x] `POST /api/reminders` — 생성
+  - [x] `PUT /api/reminders/{id}` — 수정
+  - [x] `PATCH /api/reminders/{id}/complete` — 완료 토글
+  - [x] `DELETE /api/reminders/{id}` — 삭제
+- [x] `WebConfig` CORS 설정 (localhost:3000 허용)
+- [x] 글로벌 예외 처리 (`@RestControllerAdvice`)
 
 ### 검증
-- [ ] `./gradlew build` 빌드 성공
-- [ ] H2 콘솔에서 REMINDER 테이블 확인
-- [ ] curl로 CRUD 5개 엔드포인트 동작 확인
+- [x] `./gradlew build` 빌드 성공
+- [x] H2 콘솔에서 REMINDER 테이블 확인
+- [x] curl로 CRUD 5개 엔드포인트 동작 확인
 
 ---
 

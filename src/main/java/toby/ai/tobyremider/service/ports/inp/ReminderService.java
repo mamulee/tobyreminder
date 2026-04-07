@@ -1,0 +1,21 @@
+package toby.ai.tobyremider.service.ports.inp;
+
+import toby.ai.tobyremider.dto.ReminderRequest;
+import toby.ai.tobyremider.dto.ReminderResponse;
+
+import java.util.List;
+
+public interface ReminderService {
+
+    List<ReminderResponse> findAll();
+
+    ReminderResponse findById(Long id);
+
+    ReminderResponse create(ReminderRequest request);
+
+    ReminderResponse update(Long id, ReminderRequest request);
+
+    ReminderResponse toggleComplete(Long id);
+
+    void delete(Long id);
+}
