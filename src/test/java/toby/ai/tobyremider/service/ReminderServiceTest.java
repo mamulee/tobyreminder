@@ -6,8 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import toby.ai.tobyremider.dto.ReminderListRequest;
+import toby.ai.tobyremider.dto.ReminderListResponse;
 import toby.ai.tobyremider.dto.ReminderRequest;
 import toby.ai.tobyremider.dto.ReminderResponse;
+import toby.ai.tobyremider.service.ports.inp.ReminderListService;
 import toby.ai.tobyremider.service.ports.inp.ReminderService;
 
 import java.util.NoSuchElementException;
@@ -21,6 +24,9 @@ class ReminderServiceTest {
 
     @Autowired
     private ReminderService reminderService;
+
+    @Autowired
+    private ReminderListService reminderListService;
 
     private ReminderResponse savedReminder;
 
@@ -102,5 +108,43 @@ class ReminderServiceTest {
     void deleteNotFound() {
         assertThatThrownBy(() -> reminderService.delete(999L))
                 .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    @DisplayName("리스트에 리마인더를 생성한다")
+    void createInList() {
+        ReminderListResponse list = reminderListService.create(
+                new ReminderListRequest("장보기", "#FF3B30", "cart"));
+
+        ReminderResponse result = reminderService.createInList(list.id(),
+                new ReminderRequest("우유 사기", null, null, null, null));
+
+        assertThat(result.id()).isNotNull();
+        assertThat(result.title()).isEqualTo("우유 사기");
+        assertThat(result.listId()).isEqualTo(list.id());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 리스트에 생성 시 예외가 발생한다")
+    void createInListNotFound() {
+        assertThatThrownBy(() -> reminderService.createInList(999L,
+                new ReminderRequest("우유 사기", null, null, null, null)))
+                .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    @DisplayName("리스트별 리마인더를 조회한다")
+    void findByListId() {
+        ReminderListResponse list = reminderListService.create(
+                new ReminderListRequest("장보기", "#FF3B30", "cart"));
+        reminderService.createInList(list.id(),
+                new ReminderRequest("우유 사기", null, null, null, null));
+        reminderService.createInList(list.id(),
+                new ReminderRequest("빵 사기", null, null, null, null));
+
+        var result = reminderService.findByListId(list.id());
+
+        assertThat(result).hasSize(2);
+        assertThat(result).allMatch(r -> r.listId().equals(list.id()));
     }
 }

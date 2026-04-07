@@ -3,6 +3,7 @@ package toby.ai.tobyremider.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import toby.ai.tobyremider.dto.ReminderListRequest;
 import toby.ai.tobyremider.dto.ReminderListResponse;
@@ -32,13 +33,13 @@ public class ReminderListController {
     }
 
     @PostMapping
-    public ResponseEntity<ReminderListResponse> create(@RequestBody ReminderListRequest request) {
+    public ResponseEntity<ReminderListResponse> create(@Valid @RequestBody ReminderListRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(reminderListService.create(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ReminderListResponse> update(@PathVariable Long id,
-                                                       @RequestBody ReminderListRequest request) {
+                                                       @Valid @RequestBody ReminderListRequest request) {
         return ResponseEntity.ok(reminderListService.update(id, request));
     }
 
@@ -55,7 +56,7 @@ public class ReminderListController {
 
     @PostMapping("/{listId}/reminders")
     public ResponseEntity<ReminderResponse> createReminder(@PathVariable Long listId,
-                                                           @RequestBody ReminderRequest request) {
+                                                           @Valid @RequestBody ReminderRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(reminderService.createInList(listId, request));
     }
 }

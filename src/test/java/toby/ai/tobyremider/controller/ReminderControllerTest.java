@@ -101,6 +101,26 @@ class ReminderControllerTest {
     }
 
     @Test
+    @DisplayName("POST /api/reminders — 빈 제목으로 생성 시 400을 반환한다")
+    void createWithBlankTitle() throws Exception {
+        mockMvc.perform(post("/api/reminders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"title\":\"\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400));
+    }
+
+    @Test
+    @DisplayName("POST /api/reminders — 제목 없이 생성 시 400을 반환한다")
+    void createWithNullTitle() throws Exception {
+        mockMvc.perform(post("/api/reminders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"memo\":\"메모만\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400));
+    }
+
+    @Test
     @DisplayName("DELETE /api/reminders/{id} — 리마인더를 삭제한다")
     void deleteReminder() throws Exception {
         mockMvc.perform(delete("/api/reminders/{id}", savedReminder.id()))

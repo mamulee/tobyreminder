@@ -3,6 +3,7 @@ package toby.ai.tobyremider.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import toby.ai.tobyremider.dto.ReminderRequest;
 import toby.ai.tobyremider.dto.ReminderResponse;
@@ -28,13 +29,13 @@ public class ReminderController {
     }
 
     @PostMapping
-    public ResponseEntity<ReminderResponse> create(@RequestBody ReminderRequest request) {
+    public ResponseEntity<ReminderResponse> create(@Valid @RequestBody ReminderRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(reminderService.create(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ReminderResponse> update(@PathVariable Long id,
-                                                   @RequestBody ReminderRequest request) {
+                                                   @Valid @RequestBody ReminderRequest request) {
         return ResponseEntity.ok(reminderService.update(id, request));
     }
 

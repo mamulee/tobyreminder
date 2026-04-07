@@ -94,6 +94,16 @@ class ReminderListControllerTest {
     }
 
     @Test
+    @DisplayName("POST /api/lists — 빈 이름으로 생성 시 400을 반환한다")
+    void createWithBlankName() throws Exception {
+        mockMvc.perform(post("/api/lists")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"\",\"color\":\"#FF3B30\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400));
+    }
+
+    @Test
     @DisplayName("DELETE /api/lists/{id} — 리스트를 삭제한다")
     void deleteList() throws Exception {
         mockMvc.perform(delete("/api/lists/{id}", savedList.id()))

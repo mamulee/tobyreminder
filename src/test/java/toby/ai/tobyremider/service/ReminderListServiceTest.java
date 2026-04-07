@@ -6,9 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import jakarta.persistence.EntityManager;
 import toby.ai.tobyremider.dto.ReminderListRequest;
 import toby.ai.tobyremider.dto.ReminderListResponse;
+import toby.ai.tobyremider.dto.ReminderRequest;
 import toby.ai.tobyremider.service.ports.inp.ReminderListService;
+import toby.ai.tobyremider.service.ports.inp.ReminderService;
 
 import java.util.NoSuchElementException;
 
@@ -21,6 +24,12 @@ class ReminderListServiceTest {
 
     @Autowired
     private ReminderListService reminderListService;
+
+    @Autowired
+    private ReminderService reminderService;
+
+    @Autowired
+    private EntityManager em;
 
     private ReminderListResponse savedList;
 
@@ -87,6 +96,22 @@ class ReminderListServiceTest {
 
         assertThatThrownBy(() -> reminderListService.findById(savedList.id()))
                 .isInstanceOf(NoSuchElementException.class);
+    }
+
+    @Test
+    @DisplayName("리스트 삭제 시 소속 리마인더도 함께 삭제된다")
+    void deleteCascadesReminders() {
+        reminderService.createInList(savedList.id(),
+                new ReminderRequest("우유 사기", null, null, null, null));
+        reminderService.createInList(savedList.id(),
+                new ReminderRequest("빵 사기", null, null, null, null));
+        em.flush();
+        em.clear();
+
+        reminderListService.delete(savedList.id());
+        em.flush();
+
+        assertThat(reminderService.findByListId(savedList.id())).isEmpty();
     }
 
     @Test

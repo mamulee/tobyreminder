@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { ReminderListType } from "@/lib/api";
 
 const COLORS = [
@@ -18,6 +18,7 @@ interface ListModalProps {
 export default function ListModal({ list, onSave, onClose }: ListModalProps) {
   const [name, setName] = useState(list?.name ?? "");
   const [color, setColor] = useState(list?.color ?? COLORS[5]);
+  const submitting = useRef(false);
 
   useEffect(() => {
     if (list) {
@@ -26,11 +27,9 @@ export default function ListModal({ list, onSave, onClose }: ListModalProps) {
     }
   }, [list]);
 
-  const [submitted, setSubmitted] = useState(false);
-
   const handleSubmit = () => {
-    if (!name.trim() || submitted) return;
-    setSubmitted(true);
+    if (!name.trim() || submitting.current) return;
+    submitting.current = true;
     onSave({ name: name.trim(), color, icon: "" });
   };
 
@@ -48,7 +47,12 @@ export default function ListModal({ list, onSave, onClose }: ListModalProps) {
           placeholder="목록 이름"
           autoFocus
           className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm mb-4 outline-none focus:border-blue-400"
-          onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSubmit();
+            }
+          }}
         />
 
         <div className="mb-4">
@@ -57,6 +61,7 @@ export default function ListModal({ list, onSave, onClose }: ListModalProps) {
             {COLORS.map((c) => (
               <button
                 key={c}
+                type="button"
                 onClick={() => setColor(c)}
                 className="w-8 h-8 rounded-full flex items-center justify-center transition-transform"
                 style={{
@@ -71,12 +76,14 @@ export default function ListModal({ list, onSave, onClose }: ListModalProps) {
 
         <div className="flex gap-2">
           <button
+            type="button"
             onClick={onClose}
             className="flex-1 py-2 rounded-lg text-sm font-medium text-gray-600 bg-gray-100 hover:bg-gray-200"
           >
             취소
           </button>
           <button
+            type="button"
             onClick={handleSubmit}
             className="flex-1 py-2 rounded-lg text-sm font-medium text-white bg-blue-500 hover:bg-blue-600"
           >
