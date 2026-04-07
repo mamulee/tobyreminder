@@ -26,29 +26,29 @@
 ## Phase 2: Frontend 세팅 + 리마인더 목록 UI
 
 ### 프로젝트 세팅
-- [ ] `frontend/` 디렉토리에 Next.js 프로젝트 생성 (TypeScript)
-- [ ] Tailwind CSS 설정
-- [ ] Apple 시스템 폰트 설정 (-apple-system, BlinkMacSystemFont)
-- [ ] API 클라이언트 유틸 생성 (`lib/api.ts` — fetch wrapper, base URL 설정)
+- [x] `frontend/` 디렉토리에 Next.js 프로젝트 생성 (TypeScript)
+- [x] Tailwind CSS 설정
+- [x] Apple 시스템 폰트 설정 (-apple-system, BlinkMacSystemFont)
+- [x] API 클라이언트 유틸 생성 (`lib/api.ts` — fetch wrapper, base URL 설정)
 
 ### 레이아웃
-- [ ] 루트 레이아웃 구성 (배경색 #F2F2F7)
-- [ ] 2-column 레이아웃 (사이드바 280px + 메인 영역)
-- [ ] 사이드바 placeholder (추후 스마트 리스트/목록 추가)
+- [x] 루트 레이아웃 구성 (배경색 #F2F2F7)
+- [x] 2-column 레이아웃 (사이드바 280px + 메인 영역)
+- [x] 사이드바 placeholder (추후 스마트 리스트/목록 추가)
 
 ### 리마인더 목록 컴포넌트
-- [ ] `ReminderList` 컴포넌트 — 리마인더 목록 표시 (흰색 라운드 카드)
-- [ ] `ReminderItem` 컴포넌트 — 개별 리마인더 행
-  - [ ] 원형 체크박스 (미완료: 빈 원, 완료: 채워진 원 + 체크마크)
-  - [ ] 완료 시 취소선 + 회색 텍스트 + 0.3s fade-out 애니메이션
-- [ ] "+ 새로운 미리 알림" 버튼 → 인라인 입력 필드 활성화
-- [ ] 리마인더 삭제 (우클릭 컨텍스트 메뉴 또는 삭제 버튼)
+- [x] `ReminderList` 컴포넌트 — 리마인더 목록 표시 (흰색 라운드 카드)
+- [x] `ReminderItem` 컴포넌트 — 개별 리마인더 행
+  - [x] 원형 체크박스 (미완료: 빈 원, 완료: 채워진 원 + 체크마크)
+  - [x] 완료 시 취소선 + 회색 텍스트 + 0.3s fade-out 애니메이션
+- [x] "+ 새로운 미리 알림" 버튼 → 인라인 입력 필드 활성화
+- [x] 리마인더 삭제 (우클릭 컨텍스트 메뉴 또는 삭제 버튼)
 
 ### 검증
-- [ ] `npm run dev` → localhost:3000 접속 확인
-- [ ] 리마인더 추가 → 목록에 표시
-- [ ] 체크박스 클릭 → 완료 처리 + 애니메이션
-- [ ] 삭제 동작 확인
+- [x] `npm run dev` → localhost:3000 접속 확인
+- [x] 리마인더 추가 → 목록에 표시
+- [x] 체크박스 클릭 → 완료 처리 + 애니메이션
+- [x] 삭제 동작 확인
 
 ---
 
