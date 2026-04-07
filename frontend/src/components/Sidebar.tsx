@@ -6,20 +6,22 @@ import ListModal from "./ListModal";
 
 interface SidebarProps {
   selectedListId: number | null;
-  onSelectList: (id: number | null) => void;
+  onSelectList: (id: number | null, list?: ReminderListType) => void;
 }
 
 export default function Sidebar({ selectedListId, onSelectList }: SidebarProps) {
   const [lists, setLists] = useState<ReminderListType[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [editingList, setEditingList] = useState<ReminderListType | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const loadLists = async () => {
     try {
+      setError(null);
       const data = await listApi.findAll();
       setLists(data);
     } catch {
-      console.error("Failed to load lists");
+      setError("목록을 불러올 수 없습니다");
     }
   };
 
@@ -29,6 +31,7 @@ export default function Sidebar({ selectedListId, onSelectList }: SidebarProps) 
 
   const handleSave = async (data: { name: string; color: string; icon: string }) => {
     try {
+      setError(null);
       if (editingList) {
         await listApi.update(editingList.id, data);
       } else {
@@ -38,17 +41,18 @@ export default function Sidebar({ selectedListId, onSelectList }: SidebarProps) 
       setEditingList(null);
       loadLists();
     } catch {
-      console.error("Failed to save list");
+      setError("목록 저장에 실패했습니다");
     }
   };
 
   const handleDelete = async (id: number) => {
     try {
+      setError(null);
       await listApi.delete(id);
       if (selectedListId === id) onSelectList(null);
       loadLists();
     } catch {
-      console.error("Failed to delete list");
+      setError("목록 삭제에 실패했습니다");
     }
   };
 
@@ -62,6 +66,12 @@ export default function Sidebar({ selectedListId, onSelectList }: SidebarProps) 
           disabled
         />
       </div>
+
+      {error && (
+        <div className="mb-3 px-3 py-2 bg-red-50 text-red-600 text-xs rounded-lg">
+          {error}
+        </div>
+      )}
 
       {/* 스마트 리스트 placeholder */}
       <div className="grid grid-cols-2 gap-2 mb-6">
@@ -96,12 +106,15 @@ export default function Sidebar({ selectedListId, onSelectList }: SidebarProps) 
           {lists.map((list) => (
             <div
               key={list.id}
+              role="button"
+              tabIndex={0}
               className={`group flex items-center gap-2 px-2 py-1.5 rounded-lg cursor-pointer transition-colors ${
                 selectedListId === list.id
                   ? "bg-blue-50"
                   : "hover:bg-gray-100"
               }`}
-              onClick={() => onSelectList(list.id)}
+              onClick={() => onSelectList(list.id, list)}
+              onKeyDown={(e) => e.key === "Enter" && onSelectList(list.id, list)}
               onContextMenu={(e) => {
                 e.preventDefault();
                 setEditingList(list);

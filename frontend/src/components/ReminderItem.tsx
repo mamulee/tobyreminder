@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Reminder } from "@/lib/api";
+import type { Reminder, Priority } from "@/lib/api";
 
 interface ReminderItemProps {
   reminder: Reminder;
@@ -10,7 +10,7 @@ interface ReminderItemProps {
   onSelect: (reminder: Reminder) => void;
 }
 
-function priorityMarker(priority: string) {
+function priorityMarker(priority: Priority) {
   if (priority === "LOW") return "!";
   if (priority === "MEDIUM") return "!!";
   if (priority === "HIGH") return "!!!";
@@ -19,12 +19,12 @@ function priorityMarker(priority: string) {
 
 function formatDueDate(dateStr: string) {
   const date = new Date(dateStr);
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  if (hours === 0 && minutes === 0) return `${month}/${day}`;
-  return `${month}/${day} ${hours}:${String(minutes).padStart(2, "0")}`;
+  return new Intl.DateTimeFormat("ko-KR", {
+    month: "numeric",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+  }).format(date);
 }
 
 export default function ReminderItem({
@@ -48,13 +48,19 @@ export default function ReminderItem({
 
   return (
     <div
+      role="button"
+      tabIndex={0}
       className={`group flex items-center gap-3 px-4 py-2 cursor-pointer hover:bg-gray-50 transition-all duration-300 ${
         fadeOut ? "opacity-0" : "opacity-100"
       }`}
       onClick={() => onSelect(reminder)}
+      onKeyDown={(e) => e.key === "Enter" && onSelect(reminder)}
     >
       {/* 원형 체크박스 */}
       <button
+        role="checkbox"
+        aria-checked={reminder.completed}
+        aria-label={`${reminder.title} ${reminder.completed ? "완료됨" : "미완료"}`}
         onClick={handleToggle}
         className="flex-shrink-0 w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center hover:border-blue-500 transition-colors"
         style={
@@ -95,7 +101,7 @@ export default function ReminderItem({
 
       {/* 플래그 */}
       {reminder.flagged && (
-        <span className="text-orange-500 text-sm flex-shrink-0">🚩</span>
+        <span className="text-orange-500 text-sm flex-shrink-0" aria-label="플래그 지정됨">🚩</span>
       )}
 
       {/* 삭제 버튼 */}
@@ -104,6 +110,7 @@ export default function ReminderItem({
           e.stopPropagation();
           onDelete(reminder.id);
         }}
+        aria-label={`${reminder.title} 삭제`}
         className="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-600 transition-opacity text-xs flex-shrink-0"
       >
         삭제

@@ -16,10 +16,12 @@ export default function ReminderList({ listId, listName, listColor }: ReminderLi
   const [isAdding, setIsAdding] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [selectedReminder, setSelectedReminder] = useState<Reminder | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const loadReminders = async () => {
     try {
+      setError(null);
       const data = listId
         ? await reminderApi.findByListId(listId)
         : await reminderApi.findAll();
@@ -29,7 +31,7 @@ export default function ReminderList({ listId, listName, listColor }: ReminderLi
         setSelectedReminder(updated ?? null);
       }
     } catch {
-      console.error("Failed to load reminders");
+      setError("리마인더를 불러올 수 없습니다");
     }
   };
 
@@ -59,7 +61,7 @@ export default function ReminderList({ listId, listName, listColor }: ReminderLi
       setIsAdding(false);
       loadReminders();
     } catch {
-      console.error("Failed to create reminder");
+      setError("리마인더 추가에 실패했습니다");
     } finally {
       isSubmitting.current = false;
     }
@@ -78,7 +80,7 @@ export default function ReminderList({ listId, listName, listColor }: ReminderLi
       await reminderApi.toggleComplete(id);
       loadReminders();
     } catch {
-      console.error("Failed to toggle complete");
+      setError("상태 변경에 실패했습니다");
     }
   };
 
@@ -88,7 +90,7 @@ export default function ReminderList({ listId, listName, listColor }: ReminderLi
       if (selectedReminder?.id === id) setSelectedReminder(null);
       loadReminders();
     } catch {
-      console.error("Failed to delete reminder");
+      setError("삭제에 실패했습니다");
     }
   };
 
@@ -104,6 +106,12 @@ export default function ReminderList({ listId, listName, listColor }: ReminderLi
         <h1 className="text-3xl font-bold mb-4" style={{ color }}>
           {title}
         </h1>
+
+        {error && (
+          <div className="mb-3 px-3 py-2 bg-red-50 text-red-600 text-xs rounded-lg">
+            {error}
+          </div>
+        )}
 
         <div className="bg-white rounded-xl shadow-sm">
           {incompleteReminders.map((reminder) => (

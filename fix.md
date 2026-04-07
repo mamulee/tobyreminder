@@ -17,19 +17,19 @@
 ## Priority: Medium
 
 ### Backend
-- [ ] GlobalExceptionHandler에 `DataIntegrityViolationException` 핸들러 추가 (409 응답)
-- [ ] GlobalExceptionHandler에 `HttpMessageNotReadableException` 핸들러 추가 (400 응답)
-- [ ] H2 콘솔을 dev 프로파일에서만 활성화 (`application-dev.yml` 분리)
-- [ ] CORS `allowedHeaders`를 명시적 헤더로 제한 (`Content-Type`, `Accept`)
+- [x] GlobalExceptionHandler에 `DataIntegrityViolationException` 핸들러 추가 (409 응답)
+- [x] GlobalExceptionHandler에 `HttpMessageNotReadableException` 핸들러 추가 (400 응답)
+- [x] H2 콘솔을 dev 프로파일에서만 활성화 (`application-dev.yml` 분리)
+- [x] CORS `allowedHeaders`를 명시적 헤더로 제한 (`Content-Type`, `Accept`)
 
 ### Frontend
-- [ ] API 에러 시 사용자 피드백 표시 (에러 상태 + UI 메시지)
-- [ ] page.tsx의 lists 로딩과 Sidebar의 lists 로딩 중복 제거
-- [ ] page.tsx `useEffect` 의존성에서 `selectedListId` 제거 (불필요한 재조회 방지)
-- [ ] ReminderItem 체크박스에 `aria-label`, `role="checkbox"`, `aria-checked` 추가
-- [ ] ListModal에 `role="dialog"`, `aria-modal="true"`, `aria-labelledby` 추가
-- [ ] `priorityMarker` 함수 파라미터 타입을 `string` → `Priority`로 변경
-- [ ] `api.ts` BASE_URL을 환경변수(`NEXT_PUBLIC_API_URL`)로 변경
+- [x] API 에러 시 사용자 피드백 표시 (에러 상태 + UI 메시지)
+- [x] page.tsx의 lists 로딩과 Sidebar의 lists 로딩 중복 제거
+- [x] page.tsx `useEffect` 의존성에서 `selectedListId` 제거 (불필요한 재조회 방지)
+- [x] ReminderItem 체크박스에 `aria-label`, `role="checkbox"`, `aria-checked` 추가
+- [x] ListModal에 `role="dialog"`, `aria-modal="true"`, `aria-labelledby` 추가
+- [x] `priorityMarker` 함수 파라미터 타입을 `string` → `Priority`로 변경
+- [x] `api.ts` BASE_URL을 환경변수(`NEXT_PUBLIC_API_URL`)로 변경
 
 ---
 

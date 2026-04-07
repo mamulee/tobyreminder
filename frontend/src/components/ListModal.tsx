@@ -34,9 +34,9 @@ export default function ListModal({ list, onSave, onClose }: ListModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50" role="dialog" aria-modal="true" aria-labelledby="list-modal-title">
       <div className="bg-white rounded-2xl w-[340px] p-6 shadow-xl">
-        <h2 className="text-lg font-semibold text-center mb-4">
+        <h2 id="list-modal-title" className="text-lg font-semibold text-center mb-4">
           {list ? "목록 편집" : "새로운 목록"}
         </h2>
 

@@ -111,6 +111,16 @@ class ReminderControllerTest {
     }
 
     @Test
+    @DisplayName("POST /api/reminders — 잘못된 JSON 요청 시 400을 반환한다")
+    void createWithMalformedJson() throws Exception {
+        mockMvc.perform(post("/api/reminders")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{invalid json}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status").value(400));
+    }
+
+    @Test
     @DisplayName("POST /api/reminders — 제목 없이 생성 시 400을 반환한다")
     void createWithNullTitle() throws Exception {
         mockMvc.perform(post("/api/reminders")

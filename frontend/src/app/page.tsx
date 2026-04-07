@@ -1,23 +1,22 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useCallback } from "react";
 import Sidebar from "@/components/Sidebar";
 import ReminderList from "@/components/ReminderList";
-import { listApi, type ReminderListType } from "@/lib/api";
+import type { ReminderListType } from "@/lib/api";
 
 export default function Home() {
   const [selectedListId, setSelectedListId] = useState<number | null>(null);
-  const [lists, setLists] = useState<ReminderListType[]>([]);
+  const [selectedList, setSelectedList] = useState<ReminderListType | null>(null);
 
-  useEffect(() => {
-    listApi.findAll().then(setLists).catch(() => {});
-  }, [selectedListId]);
-
-  const selectedList = lists.find((l) => l.id === selectedListId);
+  const handleSelectList = useCallback((id: number | null, list?: ReminderListType) => {
+    setSelectedListId(id);
+    setSelectedList(list ?? null);
+  }, []);
 
   return (
     <div className="flex h-full">
-      <Sidebar selectedListId={selectedListId} onSelectList={setSelectedListId} />
+      <Sidebar selectedListId={selectedListId} onSelectList={handleSelectList} />
       <ReminderList
         listId={selectedListId}
         listName={selectedList?.name}
