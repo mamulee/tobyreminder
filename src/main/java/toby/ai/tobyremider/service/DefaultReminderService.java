@@ -3,6 +3,8 @@ package toby.ai.tobyremider.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import toby.ai.tobyremider.domain.Reminder;
 import toby.ai.tobyremider.domain.ReminderList;
 import toby.ai.tobyremider.dto.ReminderRequest;
@@ -27,6 +29,12 @@ public class DefaultReminderService implements ReminderService {
         return reminderRepository.findAll().stream()
                 .map(ReminderResponse::from)
                 .toList();
+    }
+
+    @Override
+    public Page<ReminderResponse> findAll(Pageable pageable) {
+        return reminderRepository.findAll(pageable)
+                .map(ReminderResponse::from);
     }
 
     @Override

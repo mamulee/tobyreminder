@@ -16,6 +16,7 @@ export default function ReminderDetail({ reminder, onUpdate, onClose }: Reminder
   const [dueDate, setDueDate] = useState(reminder.dueDate?.slice(0, 16) ?? "");
   const [priority, setPriority] = useState<Priority>(reminder.priority);
   const [flagged, setFlagged] = useState(reminder.flagged);
+  const [saveStatus, setSaveStatus] = useState<"idle" | "saved" | "error">("idle");
 
   useEffect(() => {
     setTitle(reminder.title);
@@ -35,16 +36,26 @@ export default function ReminderDetail({ reminder, onUpdate, onClose }: Reminder
         priority,
         flagged,
       });
+      setSaveStatus("saved");
+      setTimeout(() => setSaveStatus("idle"), 1500);
       onUpdate();
     } catch {
-      console.error("Failed to update reminder");
+      setSaveStatus("error");
     }
   };
 
   return (
     <div className="w-[320px] bg-[#f2f2f7] border-l border-gray-200 p-4 overflow-y-auto">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-sm font-semibold text-gray-500">상세 정보</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-gray-500">상세 정보</h2>
+          {saveStatus === "saved" && (
+            <span className="text-xs text-green-500">저장됨</span>
+          )}
+          {saveStatus === "error" && (
+            <span className="text-xs text-red-500">저장 실패</span>
+          )}
+        </div>
         <button onClick={onClose} className="text-gray-400 hover:text-gray-600 text-lg">
           ✕
         </button>

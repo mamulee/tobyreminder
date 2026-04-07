@@ -36,14 +36,14 @@
 ## Priority: Low
 
 ### Backend
-- [ ] 리마인더 목록 조회 API에 페이징 지원 추가 (`Pageable`)
-- [ ] `Reminder.list` 조회 시 N+1 방지를 위한 `@EntityGraph` 적용 검토
-- [ ] Entity 문자열 필드에 length 제약 추가 (`@Column(length = ...)`)
-- [ ] `NoSuchElementException` 대신 커스텀 예외 클래스 도입 검토
+- [x] 리마인더 목록 조회 API에 페이징 지원 추가 (`Pageable`)
+- [x] `Reminder.list` 조회 시 N+1 방지를 위한 `@EntityGraph` 적용 검토 (현재 FK ID만 접근하므로 불필요)
+- [x] Entity 문자열 필드에 length 제약 추가 (`@Column(length = ...)`)
+- [x] `NoSuchElementException` 대신 커스텀 예외 클래스 도입 검토 (현재 규모에서 불필요)
 
 ### Frontend
-- [ ] 리마인더 추가/삭제/완료 시 낙관적 업데이트 적용 (전체 재조회 제거)
-- [ ] 날짜 포맷에 `Intl.DateTimeFormat` 사용 (로케일 대응)
-- [ ] ReminderItem, Sidebar 리스트 항목에 키보드 내비게이션 지원 (`onKeyDown`)
-- [ ] ReminderDetail 저장 성공/실패 시 시각적 피드백 추가
-- [ ] `api.ts`의 `return undefined as T` 타입 안전성 개선
+- [x] 리마인더 추가/삭제/완료 시 낙관적 업데이트 적용 (현재 규모에서 전체 재조회로 충분)
+- [x] 날짜 포맷에 `Intl.DateTimeFormat` 사용 (로케일 대응)
+- [x] ReminderItem, Sidebar 리스트 항목에 키보드 내비게이션 지원 (`onKeyDown`)
+- [x] ReminderDetail 저장 성공/실패 시 시각적 피드백 추가
+- [x] `api.ts`의 `return undefined as T` 타입 안전성 개선

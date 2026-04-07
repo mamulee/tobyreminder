@@ -21,9 +21,10 @@ public class Reminder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 255)
     private String title;
 
+    @Column(length = 1000)
     private String memo;
 
     private LocalDateTime dueDate;

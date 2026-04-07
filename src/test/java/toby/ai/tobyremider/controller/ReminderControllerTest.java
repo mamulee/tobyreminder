@@ -111,6 +111,18 @@ class ReminderControllerTest {
     }
 
     @Test
+    @DisplayName("GET /api/reminders — 페이징으로 조회한다")
+    void findAllPaged() throws Exception {
+        for (int i = 0; i < 5; i++) {
+            reminderService.create(new ReminderRequest("할일" + i, null, null, null, null));
+        }
+        mockMvc.perform(get("/api/reminders").param("page", "0").param("size", "3"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.content.length()").value(3))
+                .andExpect(jsonPath("$.totalElements").value(6));
+    }
+
+    @Test
     @DisplayName("POST /api/reminders — 잘못된 JSON 요청 시 400을 반환한다")
     void createWithMalformedJson() throws Exception {
         mockMvc.perform(post("/api/reminders")
